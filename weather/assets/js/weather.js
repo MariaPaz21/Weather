@@ -24,39 +24,52 @@ let loadDayForecastData = () => {
     let rainHTML = document.getElementById('rainfall')
     rainHTML.innerHTML = rainfall
 
-    let [element1, element2] = forecast_today
-    let {lapse, text, temperature, forecast, icon} = element1
-    let {night_lapse, night_text, night_temperature, night_forecast, night_icon} = element2
-    console.log(element2)
-    let iconhtml = document.getElementById('late_icon')
-    iconhtml.innerHTML = icon
+    let [late, night] = guayaquil.forecast_today
 
-    let temphtml = document.getElementById('late_temperature')
-    temphtml.innerHTML = temperature
-
-    let forecasthtml = document.getElementById('late_forecast')
-    forecasthtml.innerHTML = forecast
-
-    let texthtml = document.getElementById('late_text')
-    texthtml.innerHTML = text
+    let lateIconHtml = document.getElementById('late_icon')
+    lateIconHtml.innerHTML = late.icon
     
-    let niconHTML = document.getElementById('night_icon')
-    niconHTML.innerHTML = night_icon
-    
+    let latetemphtml = document.getElementById('late_temperature')
+    latetemphtml.innerHTML = late.temperature
 
+    let lateforehtml = document.getElementById('late_forecast')
+    lateforehtml.innerHTML = late.forecast
+
+    let latetexthtml = document.getElementById('late_text')
+    latetexthtml.innerHTML = late.text
+
+
+    let nightIconHtml = document.getElementById('night_icon')
+    nightIconHtml.innerHTML = night.icon
+
+    let nighttemphtml = document.getElementById('night_temperature')
+    nighttemphtml.innerHTML = night.temperature
+
+    let nightforehtml = document.getElementById('night_forecast')
+    nightforehtml.innerHTML = night.forecast
+
+    let nighttexthtml = document.getElementById('night_text')
+    nighttexthtml.innerHTML = night.text
 
 }
 
 let loadWeekForecastData = () => {
 	let [guayaquil, ambato, tena] = weather_data
-    let {  maxtemperature, mintemperature, cloudiness, wind, rainfall, forecast_today, forecast_week} = guayaquil
-	
-    let [day1, day2, day3, day4, day5, day6, day7] = forecast_week
-    let {day_2, text2, date2, temperature2, icon2 } = day2
-    console.log(day2)
-    let text_day2 = document.getElementById('day2_text')
-    text_day2.innerHTML = text2
+    let week = document.getElementsByClassName('list-group')
 
+    for (let dia of guayaquil.forecast_week) {
+        week[0].innerHTML = week[0].innerHTML +
+        `<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+        <div class="d-flex flex-column">
+          <h6 class="mb-1 text-dark font-weight-bold text-sm">${dia.text}</h6>
+          <span class="text-xs">${dia.date}</span>
+        </div>
+        <div class="d-flex align-items-center ">
+          <span class="font-weight-bold text-dark mx-2">${dia.temperature.max}</span> |  <span class="text-dark mx-2">${dia.temperature.min}</span>
+          <div class="ms-4"><i class="material-icons fs-2 me-1 rainy">${dia.icon}</i></div>
+        </div>
+      </li>`
+    }
 }
 
 
