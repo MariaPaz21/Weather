@@ -55,7 +55,7 @@ let loadDayForecastData = () => {
 
 let loadWeekForecastData = () => {
 	let [guayaquil, ambato, tena] = weather_data
-    let week = document.getElementsByClassName('list-group')
+  let week = document.getElementsByClassName('list-group')
 
     for (let dia of guayaquil.forecast_week) {
         week[0].innerHTML = week[0].innerHTML +
@@ -70,7 +70,17 @@ let loadWeekForecastData = () => {
         </div>
       </li>`
     }
+
+  
+  
 }
+document.addEventListener("DOMContentLoaded", (event) => {
+    loadDayForecastData();
+    let botonhtml = document.getElementById('loadinfo')
+    botonhtml.addEventListener('click', (event) => {
+      loadWeekForecastData();
+    });
+  });
 
 
 loadDayForecastData();
