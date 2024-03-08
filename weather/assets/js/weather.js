@@ -1,87 +1,109 @@
 import { weather_data } from './data.js';
-
-let loadDayForecastData = () => {
+function CiudadTraer(ciudad) { 
+    let ciudadinfo
+    weather_data.forEach(function (objeto) {
+        if (objeto.city === ciudad) { ciudadinfo = objeto }
+    })
+    return ciudadinfo;
+}
+let loadDayForecastData = (ciudad) => {
     let [guayaquil, ambato, tena] = weather_data
     let { city, date, maxtemperature, mintemperature, cloudiness, wind, rainfall, forecast_today, ...other} = guayaquil
     let cityHTML = document.getElementById('city')
     cityHTML.innerHTML = city;
 
-    let dateHTML = document.getElementById('date')
-    dateHTML.innerHTML = date
+    let datehtml = document.getElementById('date')
+    datehtml.innerHTML = date
 
-    let maxtempHTML = document.getElementById('maxtemperature')
-    maxtempHTML.innerHTML = maxtemperature
+    let tempmaxhtml = document.getElementById('maxtemperature')
+    tempmaxhtml.innerHTML = maxtemperature
 
-    let mintempHTML = document.getElementById('mintemperature')
-    mintempHTML.innerHTML = mintemperature
+    let tempminhtml = document.getElementById('mintemperature')
+    tempminhtml.innerHTML = mintemperature
 
-    let cloudHTML = document.getElementById('cloudiness')
-    cloudHTML.innerHTML = cloudiness
+    let cloudhtml = document.getElementById('cloudiness')
+    cloudhtml.innerHTML = cloudiness
 
-    let windHTML = document.getElementById('wind')
-    windHTML.innerHTML = wind
+    let windhtml = document.getElementById('wind')
+    windhtml.innerHTML= wind
 
-    let rainHTML = document.getElementById('rainfall')
-    rainHTML.innerHTML = rainfall
+    let rainhtml = document.getElementById('rainfall')
+    rainhtml.innerHTML = rainfall
 
     let [late, night] = guayaquil.forecast_today
 
-    let lateIconHtml = document.getElementById('late_icon')
-    lateIconHtml.innerHTML = late.icon
+    let late_iconhtml = document.getElementById('late_icon')
+    late_iconhtml.innerHTML = late.icon
     
-    let latetemphtml = document.getElementById('late_temperature')
-    latetemphtml.innerHTML = late.temperature
+    let late_temphtml = document.getElementById('late_temperature')
+    late_temphtml.innerHTML = late.temperature
 
-    let lateforehtml = document.getElementById('late_forecast')
-    lateforehtml.innerHTML = late.forecast
+    let late_forecasthtml = document.getElementById('late_forecast')
+    late_forecasthtml.innerHTML = late.forecast
 
-    let latetexthtml = document.getElementById('late_text')
-    latetexthtml.innerHTML = late.text
+    let late_txthtml = document.getElementById('late_text')
+    late_txthtml.innerHTML = late.text
 
 
-    let nightIconHtml = document.getElementById('night_icon')
-    nightIconHtml.innerHTML = night.icon
+    let night_iconhtml = document.getElementById('night_icon')
+    night_iconhtml.innerHTML = night.icon
 
-    let nighttemphtml = document.getElementById('night_temperature')
-    nighttemphtml.innerHTML = night.temperature
+    let night_temphtml = document.getElementById('night_temperature')
+    night_temphtml.innerHTML = night.temperature
 
-    let nightforehtml = document.getElementById('night_forecast')
-    nightforehtml.innerHTML = night.forecast
+    let night_forecasthtml = document.getElementById('night_forecast')
+    night_forecasthtml.innerHTML = night.forecast
 
-    let nighttexthtml = document.getElementById('night_text')
-    nighttexthtml.innerHTML = night.text
+    let night_txthtml = document.getElementById('night_text')
+    night_txthtml.innerHTML = night.text
 
 }
 
 let loadWeekForecastData = () => {
-	let [guayaquil, ambato, tena] = weather_data
-  let week = document.getElementsByClassName('list-group')
+    let week = document.getElementsByClassName("list-group")
+    let infoCity = CiudadTraer(ciudad)
 
-    for (let dia of guayaquil.forecast_week) {
+    week[0].innerHTML = ""
+    for (let day of infoCity.forecast_week) {
         week[0].innerHTML = week[0].innerHTML +
-        `<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-        <div class="d-flex flex-column">
-          <h6 class="mb-1 text-dark font-weight-bold text-sm">${dia.text}</h6>
-          <span class="text-xs">${dia.date}</span>
-        </div>
-        <div class="d-flex align-items-center ">
-          <span class="font-weight-bold text-dark mx-2">${dia.temperature.max}</span> |  <span class="text-dark mx-2">${dia.temperature.min}</span>
-          <div class="ms-4"><i class="material-icons fs-2 me-1 rainy">${dia.icon}</i></div>
-        </div>
-      </li>`
+            `<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                <div class="d-flex flex-column">
+                    <h6 class="mb-1 text-dark font-weight-bold text-sm">${day.text}</h6>
+                    <span class="text-xs">${day.date}</span>
+                </div>
+                <div class="d-flex align-items-center ">
+                    <span class="font-weight-bold te|xt-dark mx-2">${day.temperature.max}</span> |  <span class="text-dark mx-2">${dia.temperature.min}</span>
+                    <div class="ms-4"><i class="material-icons fs-2 me-1 rainy">${day.icon}</i></div>
+                </div>
+            </li>`
     }
 
-  
-  
 }
+
 document.addEventListener("DOMContentLoaded", (event) => {
-    loadDayForecastData();
-    let botonhtml = document.getElementById('loadinfo')
-    botonhtml.addEventListener('click', (event) => {
-      loadWeekForecastData();
+    let cities = document.getElementById("dropdownMenuButton")
+    cities.addEventListener
+    while (cities.firstChild) {
+        cities.removeChild(cities.firstChild);
+    }
+    for (let i = 0; i < weather_data.length; i++) {
+        let choice = new Option(weather_data[i].city, weather_data[i].city)
+        cities.add(choice)
+    }
+
+    loadDayForecastData(cities.valor);
+
+    let cargarbtn = document.getElementById("loadinfo");
+
+    cargarbtn.addEventListener("click", function () {
+        loadWeekForecastData(cities.value);
     });
-  });
 
 
-loadDayForecastData();
-loadWeekForecastData();
+    cities.addEventListener("change", function () {
+        let ciudad = cities.value;
+        loadWeekForecastData(ciudad.value);
+        loadDayForecastData(ciudad.value);
+    })
+
+});
